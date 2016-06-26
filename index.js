@@ -6,6 +6,9 @@ var moment = require('moment'),
 		fs = require('fs'),
 	  util = require('util');
 
+// TODO Add docco to project and make docs
+// TODO Use bitwise operators for the mode
+
 /**
  * Creates a PaperbackWriter
  *
@@ -109,7 +112,7 @@ class PaperbackWriter {
 	 * Writes a line to the console
 	 */
 	lnc(arg) {
-		console.log(this.format(arg));
+		console.log(`[${this.options.basename}] ${this.format(arg)}`);
 		return this;
 	}
 	/**
