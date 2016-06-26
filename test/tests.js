@@ -10,15 +10,15 @@ describe('Paperback Writer', function() {
 				directory: 'test-data'
 			});
 			//-06-25-16-11:32:24-am
-			inst.filename.should.match(/paperback[0-9\-\:apm]+\.log/);
+			inst.filename.should.match(/paperback[0-9\-\:apm]+\.txt/);
 		})
 		it('should let you specify the name and extension of the file', function() {
 			let inst = new Writer({
 				directory: 'test-data',
 				basename: 'writer',
-				extension: 'txt'
+				extension: 'log'
 			});
-			inst.filename.should.match(/writer[0-9\-\:apm]+\.txt/);
+			inst.filename.should.match(/writer[0-9\-\:apm]+\.log/);
 		})
 		it('should let you remove the timestamp of the file', function() {
 			let inst = new Writer({
@@ -37,6 +37,12 @@ describe('Paperback Writer', function() {
 				timestampFormat: 'YYYY'
 			});
 			inst.filename.should.match(`writer-${new Date().getFullYear()}.txt`);
+		})
+		it('should throw an error if you set the mode to something invalid', function(){
+			try { new Writer({ mode: 100}); }
+			catch(e) { e.message.should.eql('Unknown mode set'); }
+			try { new Writer().mode = 100; }
+			catch(e) { e.message.should.eql('Unknown mode set'); }
 		})
 	});
 	describe('file initialisation', function() {

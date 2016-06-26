@@ -5,6 +5,17 @@ var moment = require('moment'),
 	mkdirp = require('mkdirp'),
 		fs = require('fs');
 
+/**
+ * Creates a PaperbackWriter
+ *
+ * The following options are available:
+ *  - directory (null): a directory to write the file to e.g. './place/to-write'
+ *  - basename ('paperback'): the basename of the file.
+ *  - timestamp (true): whether or not to appeand a timestamp to the filename
+ *  - timestampFormat ('MM-DD-YY-h:mm:ss-a'): the format of the timestamp using momentjs formatting
+ *  - extension ('txt'): the file extension of the file
+ *  - mode (CONSOLE): the mode to use for the ln() function
+ */
 class PaperbackWriter {
 	constructor(opts) {
 		this.options = _.defaults({}, opts, {
@@ -12,7 +23,7 @@ class PaperbackWriter {
 			'basename': 'paperback', // filename to create
 			'timestamp': true, // whether or not to appeand a timestamp to the filename
 			'timestampFormat': 'MM-DD-YY-h:mm:ss-a', // the format of the timestamp
-			'extension': 'log', // the file extension of the log
+			'extension': 'txt', // the file extension of the log
 			'mode': 2
 		});
 		this.initialise();
