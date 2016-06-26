@@ -87,4 +87,20 @@ describe('Paperback Writer', function() {
 			// make sure file exists
 		})
 	})
+	describe('writing', function() {
+		it('with ln() should be chainable', function() {
+			let inst = new Writer();
+			inst.ln('anything').should.eql(inst);
+		})
+		it('with lnc() should be chainable', function() {
+			let inst = new Writer();
+			inst.lnc('anything').should.eql(inst);
+		})
+		it('with lnf() should be chainable', function() {
+			let inst = new Writer({
+				directory: 'test-data'
+			});
+			inst.lnf('anything').should.eql(inst);
+		})
+	})
 })

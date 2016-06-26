@@ -68,7 +68,6 @@ class PaperbackWriter {
 		}
 		return this._filepath;
 	}
-
 	/**
 	 * Writes a line using the mode that is set
 	 */
@@ -80,7 +79,7 @@ class PaperbackWriter {
 	 * Writes a line to the file
 	 */
 	lnf(arg) {
-		this.stream.write(`${arg}\n`);
+		this.lnfFn(arg);
 		return this;
 	}
 	/**
@@ -91,28 +90,27 @@ class PaperbackWriter {
 		return this;
 	}
 	/**
+	 * Line writing utility
+	 */
+	lnff(arg) {
+		this.stream.write(`${arg}\n`);
+	}
+	/**
 	 * Sets the ln() function using the current mode
 	 */
 	setLnFunction() {
 		switch(this.mode) {
 			case this.BOTH :
-				if (this._isFileInitd) {
-					this.lnFn = function(arg) {
-						this.lnc(arg);
-						this.lnf(arg);
-					}
-				} else {
-					this.lnFn = function(arg) {
-						this.lnc(arg);
-						this.initFileLog(arg);
-					}
+				this.lnFn = function(arg) {
+					this.lnc(arg);
+					this.lnf(arg);
 				}
 				break;
 			case this.CONSOLE :
 				this.lnFn = this.lnc;
 				break;
 			case this.FILE :
-				this.lnFn = this._isFileInitd ? this.lnf : this.initFileLog;
+				this.lnFn = this.lnf;
 				break;
 			default :
 				throw new Error('Unknown mode set');
@@ -130,11 +128,12 @@ class PaperbackWriter {
 		this.stream = fs.createWriteStream(this.filepath, {
 			'flags': 'a'
 		});
-		this._isFileInitd = true;
+		this.lnfFn = this.lnff;
 		this.lnf(arg);
-		this.setLnFunction();
 	}
-
+	/**
+	 * Initialise's this instance
+	 */
 	initialise() {
 		// Modes
 		// TODO Switch modes to be bit flags
@@ -143,6 +142,8 @@ class PaperbackWriter {
 		this.FILE = 3;
 
 		this.mode = this.options.mode;
+
+		this.lnfFn = this.initFileLog;
 	}
 }
 
