@@ -9,7 +9,6 @@ describe('Paperback Writer', function() {
 			let inst = new Writer({
 				directory: 'test-data'
 			});
-			//-06-25-16-11:32:24-am
 			inst.filename.should.match(/paperback[0-9\-\:apm]+\.txt/);
 		})
 		it('should let you specify the name and extension of the file', function() {

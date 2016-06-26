@@ -3,7 +3,8 @@
 var moment = require('moment'),
 		 _ = require('lodash'),
 	mkdirp = require('mkdirp'),
-		fs = require('fs');
+		fs = require('fs'),
+	  util = require('util');
 
 /**
  * Creates a PaperbackWriter
@@ -15,6 +16,7 @@ var moment = require('moment'),
  *  - timestampFormat ('MM-DD-YY-h:mm:ss-a'): the format of the timestamp using momentjs formatting
  *  - extension ('txt'): the file extension of the file
  *  - mode (CONSOLE): the mode to use for the ln() function
+ *  - inspect (true): whether or not util.inspect is used for each ln call
  */
 class PaperbackWriter {
 	constructor(opts) {
@@ -24,7 +26,8 @@ class PaperbackWriter {
 			'timestamp': true, // whether or not to appeand a timestamp to the filename
 			'timestampFormat': 'MM-DD-YY-h:mm:ss-a', // the format of the timestamp
 			'extension': 'txt', // the file extension of the log
-			'mode': 2
+			'mode': 2,
+			'inspect': true
 		});
 		this.initialise();
 	}
@@ -69,6 +72,26 @@ class PaperbackWriter {
 		return this._filepath;
 	}
 	/**
+	 * Whether or not to inspect the ln() calls
+	 */
+	get inspect() {
+		return this._inspect;
+	}
+	/**
+	 * Sets whether or not to inspect the ln() calls
+	 */
+	set inspect(value) {
+		if(this._inspect !== value) {
+			this._inspect = value;
+
+			this.format = (this._inspect) ? function(arg) {
+				return util.inspect(arg);
+			} : function(arg) {
+				return arg.toString();
+			}
+		}
+	}
+	/**
 	 * Writes a line using the mode that is set
 	 */
 	ln(arg) {
@@ -86,7 +109,7 @@ class PaperbackWriter {
 	 * Writes a line to the console
 	 */
 	lnc(arg) {
-		console.log(arg);
+		console.log(this.format(arg));
 		return this;
 	}
 	/**
@@ -142,7 +165,7 @@ class PaperbackWriter {
 		this.FILE = 3;
 
 		this.mode = this.options.mode;
-
+		this.inspect = this.options.inspect;
 		this.lnfFn = this.initFileLog;
 	}
 }
