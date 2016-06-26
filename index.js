@@ -8,6 +8,7 @@ var moment = require('moment'),
 
 // TODO Add docco to project and make docs
 // TODO Use bitwise operators for the mode
+// TODO Create README
 
 /**
  * Creates a PaperbackWriter
