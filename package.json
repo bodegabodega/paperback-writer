@@ -15,6 +15,7 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "fixture-stdout": "^0.2.1",
     "mocha": "^2.5.3",
     "should": "^9.0.2"
   }

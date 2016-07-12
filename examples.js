@@ -7,11 +7,10 @@ var write = new Writer({
 	timestamp: true, // whether or not to appeand a timestamp to the filename
 	timestampFormat: 'MM-DD-YY-h:mm:ss-a', // the format of the timestamp using momentjs formatting
 	extension: 'txt' , // the file extension of the file
-	mode: Writer.CONSOLE, // the mode to use for the ln() function
-	inspect: true // whether or not util.inspect is used for each ln call
+	mode: Writer.CONSOLE // the mode to use for the ln() function
 });
 // You can write a line using the ln() function. The mode determines where the output goes
-write.ln('something');
+write.lnc('something: %s', 'great');
 
 
 var obj = {
@@ -22,4 +21,4 @@ var obj = {
 	}
 }
 
-write.ln(obj);
+//write.ln(obj);
