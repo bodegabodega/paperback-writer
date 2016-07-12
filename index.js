@@ -127,16 +127,16 @@ class PaperbackWriter {
 	 */
 	setLnFunction() {
 		switch(this.mode) {
-			case this.BOTH :
+			case this.constructor.BOTH :
 				this.lnFn = function(arg) {
 					this.lnc(arg);
 					this.lnf(arg);
 				}
 				break;
-			case this.CONSOLE :
+			case this.constructor.CONSOLE :
 				this.lnFn = this.lnc;
 				break;
-			case this.FILE :
+			case this.constructor.FILE :
 				this.lnFn = this.lnf;
 				break;
 			default :
@@ -162,16 +162,14 @@ class PaperbackWriter {
 	 * Initialise's this instance
 	 */
 	initialise() {
-		// Modes
-		// TODO Switch modes to be bit flags
-		this.BOTH = 1;
-		this.CONSOLE = 2;
-		this.FILE = 3;
-
 		this.mode = this.options.mode;
 		this.inspect = this.options.inspect;
 		this.lnfFn = this.initFileLog;
 	}
 }
+
+PaperbackWriter.BOTH = 1;
+PaperbackWriter.CONSOLE = 2;
+PaperbackWriter.FILE = 3;
 
 module.exports = PaperbackWriter;

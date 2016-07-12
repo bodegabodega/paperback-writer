@@ -1,7 +1,25 @@
 'use strict';
 
 var should = require('should'),
-	Writer = require('../index');
+	Writer = require('../index'),
+		fs = require('fs'),
+		fn = {};
+
+var	exists = function fileExists(filename){
+	try {
+		require('fs').accessSync(filename, fs.F_OK);
+		return true;
+	} catch( e ) {
+		return false;
+	}
+};
+var mute = function() {
+	fn.log = console.log;
+	console.log = function(){};
+};
+var unmute = function() {
+	console.log = fn.log;
+};
 
 describe('Paperback Writer', function() {
 	describe('initialisation', function() {
@@ -54,9 +72,11 @@ describe('Paperback Writer', function() {
 				timestamp: false
 			});
 			let fname = `./test-data/${name}.txt`;
+			exists(fname).should.be.false();
 			// make sure file doesn't exist
 		})
 		it('should not create a file if you set console mode and write a line', function(){
+			mute();
 			let name = new Date().getTime();
 			let inst = new Writer({
 				directory: 'test-data',
@@ -67,9 +87,11 @@ describe('Paperback Writer', function() {
 			});
 			inst.ln('dont do too much');
 			let fname = `./test-data/${name}.txt`;
-			// make sure file doesn't exist
+			exists(fname).should.be.false();
+			unmute();
 		})
 		it('should create a file if you change the mode after initialisation', function(){
+			mute();
 			let name = new Date().getTime();
 			let inst = new Writer({
 				directory: 'test-data',
@@ -83,23 +105,30 @@ describe('Paperback Writer', function() {
 			// make sure file doesn't exist
 			inst.mode = 3;
 			inst.ln('handle your biz');
-			// make sure file exists
+			exists(fname).should.be.true();
+			unmute();
 		})
 	})
 	describe('writing', function() {
 		it('with ln() should be chainable', function() {
+			mute();
 			let inst = new Writer();
 			inst.ln('anything').should.eql(inst);
+			unmute();
 		})
 		it('with lnc() should be chainable', function() {
+			mute();
 			let inst = new Writer();
 			inst.lnc('anything').should.eql(inst);
+			unmute();
 		})
 		it('with lnf() should be chainable', function() {
+			mute();
 			let inst = new Writer({
 				directory: 'test-data'
 			});
 			inst.lnf('anything').should.eql(inst);
+			unmute();
 		})
 	})
 })
